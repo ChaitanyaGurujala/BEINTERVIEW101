@@ -7,7 +7,7 @@ GET http://localhost:4004/odata/v4/catalog/$metadata
 GET http://localhost:4004/odata/v4/catalog/ReadEmployeeSrv
 
 
-###Create Employee with custom handler
+###Create Employee with CREATE
 POST http://localhost:4004/odata/v4/catalog/InsertEmployeeSrv
 Content-Type: application/json;IEEE754Compatible=true
 
@@ -19,3 +19,21 @@ Content-Type: application/json;IEEE754Compatible=true
     "phoneNumber": "8895647744",
     "email": "Truce16reddy@gmail.com"
 }
+
+
+
+###Update 
+PUT  http://localhost:4004/odata/v4/catalog/UpdateEmployeeSrv/22BD2137-0890-1EEA-A6C2-BB55C1978969
+Content-Type: application/json;IEEE754Compatible=true
+
+{           
+    "ID": "22BD2137-0890-1EEA-A6C2-BB55C1978969",
+    "nameFirst": "Royal",
+    "nameLast": "Phoenix",
+    "phoneNumber": "4563321457"
+}
+
+
+
+###DELETE 
+DELETE http://localhost:4004/odata/v4/catalog/DeleteEmployeeSrv/22BD2137-0890-1EEA-A6C2-BB55C1978969

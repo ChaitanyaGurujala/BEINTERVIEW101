@@ -6,6 +6,7 @@ service CatalogService {
     
     entity ReadEmployeeSrv                    as projection on my.Employees;
     entity InsertEmployeeSrv                  as projection on my.Employees;
-
+    entity UpdateEmployeeSrv                  as projection on my.Employees;
+    entity DeleteEmployeeSrv                  as projection on my.Employees;
 
 }
