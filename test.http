@@ -1,0 +1,21 @@
+### 
+GET http://localhost:4004/odata/v4/catalog/$metadata
+
+
+
+###READ of custom Entity
+GET http://localhost:4004/odata/v4/catalog/ReadEmployeeSrv
+
+
+###Create Employee with custom handler
+POST http://localhost:4004/odata/v4/catalog/InsertEmployeeSrv
+Content-Type: application/json;IEEE754Compatible=true
+
+
+{           
+    "ID": "22BD2137-0890-1EEA-A6C2-BB55C1978969",
+    "nameFirst": "Truce",
+    "nameLast": "Makro",
+    "phoneNumber": "8895647744",
+    "email": "Truce16reddy@gmail.com"
+}
