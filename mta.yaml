@@ -1,43 +1,94 @@
-_schema-version: '3.1'
+_schema-version: "3.1"
 ID: BEINTERVIEW101
+description: A simple CAP project.
 version: 1.0.0
-description: "A simple CAP project."
+modules:
+- name: BEINTERVIEW101-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: BEINTERVIEW101-db
+  - name: uaa_BEINTERVIEW101
+    parameters:
+      dbType: HANA
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+    readiness-health-check-http-endpoint: /health
+    readiness-health-check-type: http
+  build-parameters:
+    builder: npm
+- name: BEINTERVIEW101-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: BEINTERVIEW101-db
+- name: BEINTERVIEW101-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: BEINTERVIEW101-destination-service
+    parameters:
+      content-target: true
+  - name: BEINTERVIEW101_html_repo_host
+    parameters:
+      service-key:
+        name: BEINTERVIEW101_html_repo_host-key
+  - name: uaa_BEINTERVIEW101
+    parameters:
+      service-key:
+        name: uaa_BEINTERVIEW101-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: BEInterview_BEINTERVIEW101_html_repo_host
+          ServiceInstanceName: BEINTERVIEW101-html5-app-host-service
+          ServiceKeyName: BEINTERVIEW101_html_repo_host-key
+          sap.cloud.service: BEInterview
+        - Authentication: OAuth2UserTokenExchange
+          Name: BEInterview_uaa_BEINTERVIEW101
+          ServiceInstanceName: BEINTERVIEW101-xsuaa-service
+          ServiceKeyName: uaa_BEINTERVIEW101-key
+          sap.cloud.service: BEInterview
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+resources:
+- name: BEINTERVIEW101-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+- name: BEINTERVIEW101-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      version: 1.0.0
+    service: destination
+    service-name: BEINTERVIEW101-destination-service
+    service-plan: lite
+- name: BEINTERVIEW101_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: BEINTERVIEW101-html5-app-host-service
+    service-plan: app-host
+- name: uaa_BEINTERVIEW101
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: BEINTERVIEW101-xsuaa-service
+    service-plan: application
 parameters:
   enable-parallel-deployments: true
 build-parameters:
   before-all:
-    - builder: custom
-      commands:
-        - npm ci
-        - npx cds build --production
-modules:
-  - name: BEINTERVIEW101-srv
-    type: nodejs
-    path: gen/srv
-    parameters:
-      buildpack: nodejs_buildpack
-      readiness-health-check-type: http
-      readiness-health-check-http-endpoint: /health
-    build-parameters:
-      builder: npm
-    provides:
-      - name: srv-api # required by consumers of CAP services (e.g. approuter)
-        properties:
-          srv-url: ${default-url}
-    requires:
-      - name: BEINTERVIEW101-db
-
-  - name: BEINTERVIEW101-db-deployer
-    type: hdb
-    path: gen/db
-    parameters:
-      buildpack: nodejs_buildpack
-    requires:
-      - name: BEINTERVIEW101-db
-
-resources:
-  - name: BEINTERVIEW101-db
-    type: com.sap.xs.hdi-container
-    parameters:
-      service: hana
-      service-plan: hdi-shared
+  - builder: custom
+    commands:
+    - npm ci
+    - npx cds build --production
