@@ -7,7 +7,7 @@ sap.ui.define([
         "sap/ui/Device",
         "com/reddy/reddy101/model/models"
     ],
-    function (UIComponent, Device, models) {
+    function (UIComponent, models) {
         "use strict";
 
         return UIComponent.extend("com.reddy.reddy101.Component", {
@@ -27,9 +27,9 @@ sap.ui.define([
                 // enable routing
                 this.getRouter().initialize();
 
-                // set the device model
-                this.setModel(models.createDeviceModel(), "device");
-            }
+            //     // set the device model
+            //     this.setModel(models.createDeviceModel(), "device");
+             }
         });
     }
 );
