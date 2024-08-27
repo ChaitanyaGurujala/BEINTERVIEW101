@@ -1,7 +1,25 @@
 <mvc:View controllerName="com.reddy.reddy101.controller.X1"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable"
     xmlns="sap.m">
     <Page id="page" title="{i18n>title}">
-        <content />
+        <content>
+            
+            <smartTable:SmartTable id="SmartTable" 
+            entitySet="Employees"
+            tableType="ResponsiveTable" 
+            enableExport="true"
+            useVariantManagement="true"
+            useTablePersonalisation="true"
+            header="Employee Table"
+            showRowCount="true"
+            persistencyKey="smartTable_Explored"
+            enableAutoBinding="true"
+            enableAutoColumnWidth="false"
+            class="sapUiResponsiveContentPadding">
+
+			</smartTable:SmartTable>
+        </content>
     </Page>
 </mvc:View>
